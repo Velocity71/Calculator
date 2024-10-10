@@ -27,7 +27,7 @@ class RPNotator {
     }
 
     // converts an equation in infix notation to Reverse Polish notation
-    public static void notate(char[] input) {
+    public static char[] notate(char[] input) {
 
         output = new ArrayList<Character>();
         operators = new Stack<Character>();
@@ -60,7 +60,7 @@ class RPNotator {
             output.add(operators.pop());
         }
 
-        System.out.println(output);
+        return toArray(output);
     }
 
     // return true if the given character is an operator
@@ -78,5 +78,12 @@ class RPNotator {
     private static boolean checkPrecedence(char op1, char op2) {
         if (precedence.get(op1) > precedence.get(op2)) {return true;}
         else {return false;}
+    }
+
+    // return an array copy of an arrayList
+    private static char[] toArray(ArrayList<Character> arrList) {
+        char[] arr = new char[arrList.size()];
+        for (int i = 0; i < arr.length; i++) {arr[i] = arrList.get(i);}
+        return arr;
     }
 }
