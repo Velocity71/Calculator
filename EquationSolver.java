@@ -7,7 +7,7 @@ import java.util.HashMap;
 
 import java.lang.ArithmeticException;
 
-class RPNotator {
+class EquationSolver {
 
     // used to store the completed notation
     private static ArrayList<Character> output;
