@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Stack;
 import java.util.HashMap;
 
+import java.lang.ArithmeticException;
+
 class RPNotator {
 
     // used to store the completed notation
@@ -48,6 +50,8 @@ class RPNotator {
                     }
                 }
                 operators.push(input[i]);
+            } else {
+                throw new ArithmeticException("Invalid Character.");
             }
         }
 
