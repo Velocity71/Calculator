@@ -44,12 +44,12 @@ class RPNotator {
                 // if the stack is empty, push directly to the stack
                 // if the stack is not empty, pop off operators and add them to the output
                 //  until the character is of the same or more importance than the top operator on the stack
-                if (!operators.isEmpty()) {
-                    while (checkPrecedence(input[i], operators.peek())) {
-                        output.add(operators.pop());
-                    }
+                while (!operators.isEmpty() && checkPrecedence(operators.peek(), input[i])) {
+                    output.add(operators.pop());
                 }
                 operators.push(input[i]);
+
+            // throw exception if an unknown character is found
             } else {
                 throw new ArithmeticException("Invalid Character.");
             }
