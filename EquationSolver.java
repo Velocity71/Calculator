@@ -9,16 +9,20 @@ import java.lang.ArithmeticException;
 
 class EquationSolver {
 
-    // used to store the completed notation
+    // used to store the completed notation in notate()
+    // used to evaluate the equation in solve()
     private static ArrayList<Character> equation;
 
-    // used to sort the operators and place them correctly into the equation
+    // used to evaluate the equation in solve()
+    private static ArrayList<Character> newEquation;
+
+    // used to sort the operators and place them correctly into the equation in notate()
     private static Stack<Character> operators;
 
-    // used to check the precedence of an operator
+    // used to check the precedence of an operator in notate()
     private static HashMap<Character, Integer> precedence = new HashMap<Character, Integer>();
 
-    // add all values to the map
+    // add all values to the precedence HashMap
     static {
         precedence.put('+', 1);
         precedence.put('-', 1);
