@@ -10,9 +10,9 @@ import java.lang.ArithmeticException;
 class EquationSolver {
 
     // used to store the completed notation
-    private static ArrayList<Character> output;
+    private static ArrayList<Character> equation;
 
-    // used to sort the operators and place them correctly into the output
+    // used to sort the operators and place them correctly into the equation
     private static Stack<Character> operators;
 
     // used to check the precedence of an operator
@@ -29,23 +29,23 @@ class EquationSolver {
     // converts an equation in infix notation to Reverse Polish notation
     public static char[] notate(char[] input) {
 
-        output = new ArrayList<Character>();
+        equation = new ArrayList<Character>();
         operators = new Stack<Character>();
 
         for (int i = 0; i < input.length; i++) {
 
             // check if the character is a digit
             if (Character.isDigit(input[i])) {
-                output.add(input[i]);
+                equation.add(input[i]);
 
             // check if the charater is an operator
             } else if (isOperator(input[i])) {
 
                 // if the stack is empty, push directly to the stack
-                // if the stack is not empty, pop off operators and add them to the output
+                // if the stack is not empty, pop off operators and add them to the equation
                 //  until the character is of the same or more importance than the top operator on the stack
                 while (!operators.isEmpty() && checkPrecedence(operators.peek(), input[i])) {
-                    output.add(operators.pop());
+                    equation.add(operators.pop());
                 }
                 operators.push(input[i]);
 
@@ -57,10 +57,10 @@ class EquationSolver {
 
         // pop all remaining operators to the output
         while (!operators.isEmpty()) {
-            output.add(operators.pop());
+            equation.add(operators.pop());
         }
 
-        return toArray(output);
+        return toArray(equation);
     }
 
     // return true if the given character is an operator
