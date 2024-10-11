@@ -28,7 +28,7 @@ class EquationSolver {
     }
 
     // converts an equation in infix notation to Reverse Polish notation
-    public static char[] notate(char[] input) {
+    private static char[] notate(char[] input) {
 
         equation = new ArrayList<Character>();
         operators = new Stack<Character>();
@@ -66,7 +66,7 @@ class EquationSolver {
 
     // solves the equation in Reverse Polish notation
     public static void solve(char[] input) {
-        equation = toArrayList(input);
+        equation = toArrayList(notate(input));
 
         for (int i = 0; i < equation.size(); i++) {
             if (isOperator(equation.get(i))) {
@@ -85,7 +85,7 @@ class EquationSolver {
             case '+': return true;
             case '-': return true;
             case '×': return true;
-            case '4+5': return true;
+            case '÷': return true;
             default: return false;
         }
     }
