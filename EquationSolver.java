@@ -13,9 +13,6 @@ class EquationSolver {
     // used to evaluate the equation in solve()
     private static ArrayList<Character> equation;
 
-    // used to evaluate the equation in solve()
-    private static ArrayList<Character> newEquation;
-
     // used to sort the operators and place them correctly into the equation in notate()
     private static Stack<Character> operators;
 
@@ -67,27 +64,60 @@ class EquationSolver {
         return toArray(equation);
     }
 
+    // solves the equation in Reverse Polish notation
+    public static void solve(char[] input) {
+        equation = toArrayList(input);
+
+        for (int i = 0; i < equation.size(); i++) {
+            if (isOperator(equation.get(i))) {
+                equation.set(i, evaluate(equation.get(i-2), equation.get(i-1), equation.get(i)));
+                equation.remove(i-1);
+                equation.remove(i-2);
+                i-= 1;
+            }
+        }
+        System.out.println(equation.get(0));
+    }
+
     // return true if the given character is an operator
     private static boolean isOperator(char ch) {
         switch (ch) {
             case '+': return true;
             case '-': return true;
             case '×': return true;
-            case '÷': return true;
+            case '4+5': return true;
             default: return false;
         }
     }
 
     // return true only if the first operator has more precedence than the second operator
-    private static boolean checkPrecedence(char op1, char op2) {
-        if (precedence.get(op1) > precedence.get(op2)) {return true;}
+    private static boolean checkPrecedence(char operator1, char operator2) {
+        if (precedence.get(operator1) > precedence.get(operator2)) {return true;}
         else {return false;}
     }
 
-    // return an array copy of an arrayList
+    // return an array copy of an ArrayList
     private static char[] toArray(ArrayList<Character> arrList) {
         char[] arr = new char[arrList.size()];
         for (int i = 0; i < arr.length; i++) {arr[i] = arrList.get(i);}
         return arr;
+    }
+
+    // returns an ArrayList copy of an array
+    private static ArrayList<Character> toArrayList(char[] arr) {
+        ArrayList<Character> arrList = new ArrayList<Character>();
+        for (int i = 0; i < arr.length; i++) {arrList.add(arr[i]);}
+        return arrList;
+    }
+
+    // returns an evaluation of the equation formed by (operand1 operator operand2)
+    private static char evaluate(char operand1, char operand2, char operator) {
+        switch (operator) {
+            case '+': return Character.forDigit((operand1 - '0') + (operand2 - '0'), 10);
+            case '-': return Character.forDigit((operand1 - '0') - (operand2 - '0'), 10);
+            case '×': return Character.forDigit((operand1 - '0') * (operand2 - '0'), 10);
+            case '÷': return Character.forDigit((operand1 - '0') / (operand2 - '0'), 10);
+            default: throw new ArithmeticException("An error occured while evaluating the equation.");
+        }
     }
 }
