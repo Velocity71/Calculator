@@ -1,5 +1,8 @@
-// Utilizes the Shunting Yard Algorythm to convert equations from infix notation to Reverse Polish notation
+// Utilizes the Shunting Yard Algorythm to convert equations from infix notation to postfix notation (also known as Reverse Polish notation)
 // See <https://en.wikipedia.org/wiki/Shunting_yard_algorithm> for more information
+// Solves the equation in postfix notation and returns the answer
+
+// ***BEGIN IMPORTS***
 
 import java.util.ArrayList;
 import java.util.Stack;
@@ -7,7 +10,11 @@ import java.util.HashMap;
 
 import java.lang.ArithmeticException;
 
+// ***END IMPORTS***
+
 class EquationSolver {
+
+    // ***BEGIN VARIABLE DECLARATION***
 
     // used to store the completed notation in notate()
     // used to evaluate the equation in solve()
@@ -27,8 +34,31 @@ class EquationSolver {
         precedence.put("/", 2);
     }
 
-    // converts an equation in infix notation to Reverse Polish notation
-    private static String[] notate(String[] input) {
+    // ***END VARIABLE DECLARATION***
+
+    // ***BEGIN MAIN FUNCTIONS DECLARATION***
+
+    // runs the equation through the notate() function and solves the converted equation
+    public static String solve(String[] input) {
+        equation = notate(input);
+
+        // solves each equation from the inside out and returns the single number leftover
+        for (int i = 0; i <= equation.size(); i++) {
+            if (equation.size() == 1) {
+                break;
+            }
+            if (isOperator(equation.get(i))) {
+                equation.set(i, evaluate(equation.get(i - 2), equation.get(i - 1), equation.get(i)));
+                equation.remove(i - 1);
+                equation.remove(i - 2);
+                i -= 2;
+            }
+        }
+        return equation.get(0);
+    }
+
+    // converts an equation from infix notation to postfix notation
+    private static ArrayList<String> notate(String[] input) {
 
         equation = new ArrayList<String>();
         operators = new Stack<String>();
@@ -39,46 +69,30 @@ class EquationSolver {
             if (isNumber(input[i])) {
                 equation.add(input[i]);
 
-            // check if the string is an operator
+                // check if the string is an operator
             } else if (isOperator(input[i])) {
 
                 // if the stack is empty, push directly to the stack
                 // if the stack is not empty, pop off operators and add them to the equation
-                //  until the operator is of the same or more importance than the top operator on the stack
+                // until the operator is of the same or more importance than the top operator on the stack
                 while (!operators.isEmpty() && checkPrecedence(operators.peek(), input[i])) {
                     equation.add(operators.pop());
                 }
                 operators.push(input[i]);
 
-            // throw exception if an unknown character is found
-            } else {
-                throw new ArithmeticException("Invalid Character.");
-            }
+                // throw exception if an unknown character is found
+            } else {throw new ArithmeticException("Invalid Character.");}
         }
 
         // pop all remaining operators to the output
-        while (!operators.isEmpty()) {
-            equation.add(operators.pop());
-        }
-        return toArray(equation);
+        while (!operators.isEmpty()) {equation.add(operators.pop());}
+
+        return equation;
     }
 
-    // solves the equation in Reverse Polish notation
-    public static String solve(String[] input) {
-        equation = toArrayList(notate(input));
+    // ***END MAIN FUNCTIONS DECLARATION***
 
-        // solves each equation from the inside out and returns the single number leftover
-        for (int i = 0; i <= equation.size(); i++) {
-            if (equation.size() == 1) {break;}
-            if (isOperator(equation.get(i))) {
-                equation.set(i, evaluate(equation.get(i-2), equation.get(i-1), equation.get(i)));
-                equation.remove(i-1);
-                equation.remove(i-2);
-                i-=2;
-            }
-        }
-        return equation.get(0);
-    }
+    // ***BEGIN HELPER FUNCTIONS DELCARATION***
 
     // return true if the given string is a number
     private static boolean isNumber(String str) {
@@ -104,20 +118,6 @@ class EquationSolver {
         else {return false;}
     }
 
-    // return an array copy of an ArrayList
-    private static String[] toArray(ArrayList<String> arrList) {
-        String[] arr = new String[arrList.size()];
-        for (int i = 0; i < arr.length; i++) {arr[i] = arrList.get(i);}
-        return arr;
-    }
-
-    // returns an ArrayList copy of an array
-    private static ArrayList<String> toArrayList(String[] arr) {
-        ArrayList<String> arrList = new ArrayList<String>();
-        for (int i = 0; i < arr.length; i++) {arrList.add(arr[i]);}
-        return arrList;
-    }
-
     // returns an evaluation of the equation formed by (operand1 operator operand2)
     private static String evaluate(String operand1, String operand2, String operator) {
         switch (operator) {
@@ -128,4 +128,6 @@ class EquationSolver {
             default: throw new ArithmeticException("An error occured while evaluating the equation.");
         }
     }
+
+    // ***END HELPER FUNCTIONS DECLARATION***
 }
