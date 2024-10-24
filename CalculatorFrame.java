@@ -39,7 +39,8 @@ class CalculatorFrame extends Frame {
         C: clear the equation
         0-9: add number to equation
         +-x/: add operator to equation
-        .: add decimal to equation
+        .: add decimal to equation (not working)
+        %: turn decimal to percentage (not working)
         Q: quit the program
     */
     private void populateFrame() {
@@ -105,7 +106,7 @@ class CalculatorFrame extends Frame {
 
         Button subtract = new Button("-");
         subtract.setBounds(150, 150, 50, 50);
-        subtract.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent e) {addCharacter("8");}});
+        subtract.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent e) {addCharacter("-");}});
         add(subtract);
 
         Button one = new Button("1");
@@ -160,7 +161,7 @@ class CalculatorFrame extends Frame {
             equation.add(block);
             equation.add(str);
             block = "";
-        } else if (str.equals("±")) { // an macron(¯) is used to show a number is negative
+        } else if (str.equals("±")) { // a macron(¯) is used to show a number is negative
             if (block.isEmpty()) {block = "¯";}
             else if (block.charAt(0) == '¯') {block = block.substring(1);}
             else {block = "¯" + block;}
@@ -169,13 +170,14 @@ class CalculatorFrame extends Frame {
     }
 
     // solves the equation the user gave, and displays it
-    private  void submitEquation() {
+    private void submitEquation() {
         equation.add(block);
         // because the java compiler does not see a macron symbol as a negative symbol, we must replace it with a dash
         for (int i = 0; i < equation.size(); i++) {equation.set(i, equation.get(i).replace("¯", "-"));}
-        display.setText(EquationSolver.solve(toArray(equation)).replace("-", "¯")); // return the negative symbol to the macron for continuity
+        String answer = EquationSolver.solve(toArray(equation)).replace("-", "¯"); // return the negative symbol to the macron for continuity
         equation.clear();
         block = "";
+        addCharacter(answer);
     }
 
     // return true if the given string is a number
