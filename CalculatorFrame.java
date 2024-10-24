@@ -14,6 +14,7 @@ class CalculatorFrame extends Frame {
     private ArrayList<String> equation = new ArrayList<String>();
     private String block = "";
     Label display;
+    private boolean answerDisplayed = false;
 
     public CalculatorFrame() {
         super("Calculator");
@@ -156,6 +157,7 @@ class CalculatorFrame extends Frame {
     // add a character to the equation, numbers inbetween operators are kept grouped because it means they are multi-digit numbers (i.e. 11, 143)
     private void addCharacter(String str) {
         if (isNumber(str)) {
+            if (answerDisplayed) {block = ""; answerDisplayed = false;}
             block += str;
         } else if (isOperator(str)) {
             equation.add(block);
@@ -177,7 +179,9 @@ class CalculatorFrame extends Frame {
         String answer = EquationSolver.solve(toArray(equation)).replace("-", "¯"); // return the negative symbol to the macron for continuity
         equation.clear();
         block = "";
+
         addCharacter(answer);
+        answerDisplayed = true;
     }
 
     // return true if the given string is a number
