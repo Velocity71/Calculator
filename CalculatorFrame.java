@@ -54,8 +54,9 @@ class CalculatorFrame extends Frame {
         clear.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent e) {display.setText(""); equation.clear(); block = "";}});
         add(clear);
 
-        Button sign = new Button("+/-");
+        Button sign = new Button("±");
         sign.setBounds(50, 50, 50, 50);
+        sign.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent e) {addCharacter("±");}});
         add(sign);
 
         Button percentage = new Button("%");
@@ -159,6 +160,10 @@ class CalculatorFrame extends Frame {
             equation.add(block);
             equation.add(str);
             block = "";
+        } else if (str.equals("±")) { // an macron(¯) is used to show a number is negative
+            if (block.isEmpty()) {block = "¯";}
+            else if (block.charAt(0) == '¯') {block = block.substring(1);}
+            else {block = "¯" + block;}
         }
         display.setText(toString(equation) + block);
     }
@@ -166,7 +171,9 @@ class CalculatorFrame extends Frame {
     // solves the equation the user gave, and displays it
     private  void submitEquation() {
         equation.add(block);
-        display.setText(EquationSolver.solve(toArray(equation)));
+        // because the java compiler does not see a macron symbol as a negative symbol, we must replace it with a dash
+        for (int i = 0; i < equation.size(); i++) {equation.set(i, equation.get(i).replace("¯", "-"));}
+        display.setText(EquationSolver.solve(toArray(equation)).replace("-", "¯")); // return the negative symbol to the macron for continuity
         equation.clear();
         block = "";
     }
