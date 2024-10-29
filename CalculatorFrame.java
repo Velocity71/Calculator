@@ -1,7 +1,6 @@
 import java.awt.Frame;
 import java.awt.Label;
 import java.awt.Button;
-import java.awt.Color;
 import java.awt.Font;
 
 import java.awt.event.ActionListener;
@@ -142,6 +141,7 @@ class CalculatorFrame extends Frame {
 
         Button decimal = new Button(".");
         decimal.setBounds(100, 250, 50, 50);
+        decimal.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent e) {addCharacter(".");}});
         add(decimal);
 
         Button solve = new Button("=");
@@ -156,7 +156,7 @@ class CalculatorFrame extends Frame {
 
     // add a character to the equation, numbers inbetween operators are kept grouped because it means they are multi-digit numbers (i.e. 11, 143)
     private void addCharacter(String str) {
-        if (isNumber(str)) {
+        if (isInt(str) || isDouble(str)) {
             if (answerDisplayed) {block = ""; answerDisplayed = false;}
             block += str;
         } else if (isOperator(str)) {
@@ -167,6 +167,9 @@ class CalculatorFrame extends Frame {
             if (block.isEmpty()) {block = "¯";}
             else if (block.charAt(0) == '¯') {block = block.substring(1);}
             else {block = "¯" + block;}
+        } else if (str.equals(".")) {
+            if (block.isEmpty()) {block = "0.";}
+            else {block += str;}
         }
         display.setText(toString(equation) + block);
     }
@@ -179,14 +182,19 @@ class CalculatorFrame extends Frame {
         String answer = EquationSolver.solve(toArray(equation)).replace("-", "¯"); // return the negative symbol to the macron for continuity
         equation.clear();
         block = "";
-
         addCharacter(answer);
         answerDisplayed = true;
     }
 
     // return true if the given string is a number
-    private static boolean isNumber(String str) {
+    private static boolean isInt(String str) {
         try {int i = Integer.parseInt(str);}
+        catch (NumberFormatException e) {return false;}
+        return true;
+    }
+
+    private static boolean isDouble(String str) {
+        try {double d = Double.parseDouble(str);}
         catch (NumberFormatException e) {return false;}
         return true;
     }

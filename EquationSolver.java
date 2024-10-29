@@ -54,6 +54,11 @@ class EquationSolver {
                 i -= 2;
             }
         }
+
+        // if the number ends in '.0', we convert to integer
+        if (Double.parseDouble(equation.get(0)) % 1 == 0) {
+            equation.set(0, String.valueOf((int)Double.parseDouble(equation.get(0))));
+        }
         return equation.get(0);
     }
 
@@ -96,7 +101,7 @@ class EquationSolver {
 
     // return true if the given string is a number
     private static boolean isNumber(String str) {
-        try {int i = Integer.parseInt(str);}
+        try {double d = Double.parseDouble(str);}
         catch (NumberFormatException e) {return false;}
         return true;
     }
@@ -121,10 +126,10 @@ class EquationSolver {
     // returns an evaluation of the equation formed by (operand1 operator operand2)
     private static String evaluate(String operand1, String operand2, String operator) {
         switch (operator) {
-            case "+": return String.valueOf(Integer.parseInt(operand1) + Integer.parseInt(operand2));
-            case "-": return String.valueOf(Integer.parseInt(operand1) - Integer.parseInt(operand2));
-            case "*": return String.valueOf(Integer.parseInt(operand1) * Integer.parseInt(operand2));
-            case "/": return String.valueOf(Integer.parseInt(operand1) / Integer.parseInt(operand2));
+            case "+": return String.valueOf(Double.parseDouble(operand1) + Double.parseDouble(operand2));
+            case "-": return String.valueOf(Double.parseDouble(operand1) - Double.parseDouble(operand2));
+            case "*": return String.valueOf(Double.parseDouble(operand1) * Double.parseDouble(operand2));
+            case "/": return String.valueOf(Double.parseDouble(operand1) / Double.parseDouble(operand2));
             default: throw new ArithmeticException("An error occured while evaluating the equation.");
         }
     }

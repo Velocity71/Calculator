@@ -5,8 +5,8 @@ Utilizes the Shunting Yard algorithm to convert infix notation equations (i.e. 1
 
 Uses the Java.AWT GUI framework for the frontend design of the calculator.
 
-The calculator can handle addition, subtraction, multiplication, division and negative numbers (decimals implemented later).
+The calculator can handle addition, subtraction, multiplication, division, negative numbers and decimals.
 
 TO USE: 
 Download the Calculator.jar file, and ensure you also have the latest JRE or JDK downloaded.
-In the terminal, navigate inside the folder you have stored the Calculator.jar file to, and run 'java -cp Calculator.jar Main'. To exit the program press the 'Q' button. Every other button but the '.' and '%' work like a normal calculator.
+In the terminal, navigate inside the folder you have stored the Calculator.jar file to, and run 'java -cp Calculator.jar Main'. To exit the program press the 'Q' button. Every other button but '%' works like a normal calculator.
