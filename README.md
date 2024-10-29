@@ -9,4 +9,4 @@ The calculator can handle addition, subtraction, multiplication, division, negat
 
 TO USE: 
 Download the Calculator.jar file, and ensure you also have the latest JRE or JDK downloaded.
-In the terminal, navigate inside the folder you have stored the Calculator.jar file to, and run 'java -cp Calculator.jar Main'. To exit the program press the 'Q' button. Every other button works like a normal calculator.
+In the terminal, navigate inside the folder you have stored the Calculator.jar file to, and run 'java -jar Calculator.jar'. To exit the program press the 'Q' button. Every other button works like a normal calculator.
