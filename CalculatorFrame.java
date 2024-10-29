@@ -62,6 +62,7 @@ class CalculatorFrame extends Frame {
 
         Button percentage = new Button("%");
         percentage.setBounds(100, 50, 50, 50);
+        percentage.addActionListener(new ActionListener() {public void actionPerformed(ActionEvent e) {addCharacter("%");}});
         add(percentage);
 
         Button divide = new Button("/");
@@ -170,6 +171,9 @@ class CalculatorFrame extends Frame {
         } else if (str.equals(".")) {
             if (block.isEmpty()) {block = "0.";}
             else {block += str;}
+        } else if (str.equals("%")) {
+            equation.add(block);
+            block = str;
         }
         display.setText(toString(equation) + block);
     }

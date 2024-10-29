@@ -42,6 +42,13 @@ class EquationSolver {
     public static String solve(String[] input) {
         equation = notate(input);
 
+        for (int i = 0; i < equation.size(); i++) {
+            if (equation.get(i) == "%") {
+                equation.set(i-1, evaluate(equation.get(i-1), "100", "/"));
+                equation.remove(i);
+            }
+        }
+
         // solves each equation from the inside out and returns the single number leftover
         for (int i = 0; i <= equation.size(); i++) {
             if (equation.size() == 1) {
@@ -84,6 +91,9 @@ class EquationSolver {
                     equation.add(operators.pop());
                 }
                 operators.push(input[i]);
+
+            } else if (input[i] == "%") {
+                equation.add(input[i]);
 
                 // throw exception if an unknown character is found
             } else {throw new ArithmeticException("Invalid Character.");}
